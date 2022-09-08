@@ -1,34 +1,71 @@
-import speech_recognition as sr
-# import pyttsx3
-# import pywhatkit
-import datetime, base64
-
 from dotenv import load_dotenv
-
 load_dotenv()
 
-from module import requesting, language_process
-
+from time import time
+import speech_recognition as sr
 from gtts import gTTS
+import datetime, base64, time, socketio, os
 
-eng_wav = gTTS('Hello World!') 
-eng_wav.save('eng.wav')
+from module import requesting, language_process, board_controll
 
-listener = sr.Recognizer()
-# engine = pyttsx3.init()
-# voices = engine.getProperty('voices')
-# engine.setProperty('voice', voices[1].id)
-rn = sr.Recognizer()
+global sequence
+
+sequence: int = 0
+
+global sequence_dict
+
+sequence_dict: dict = {
+    "IDLE": 0,
+    "WAKE_UP": 1,
+    "LISTENING": 2,
+    "SPEAKING": 3,
+    "WAITING_NFC": 4
+}
+
+def waiting_for_idle() -> None:
+    while sequence != 0:
+        time.sleep(0.15)
+    return
+
+# SocketIO Connection Handeler
+
+sio = socketio.AsyncClient()
+sio.connect('http://localhost:5000')
+
+@sio.on('nfc')
+async def on_message(data):
+    global sequence
+    if sequence == sequence_dict["IDLE"]:
+        sequence = sequence_dict["WAKE_UP"]
+        talk('공부 모드를 시작 할까요?')
+        transcript = take_command()
+        await sio.emit('study', 'study start')
+    elif sequence == sequence_dict["WAITING_NFC"]:
+        sequence = sequence_dict["IDLE"]
+        await sio.emit('study', 'study start')
 
 
-def talk(text):
+@sio.on("led")
+async def on_message(data):
+    global sequence
+    board_controll.change_led_bright(data)
+    await waiting_for_idle()
+    sequence = sequence_dict["WAKE_UP"]
+    talk("LED 밝기를 조절했어요")
+    sequence = sequence_dict["IDLE"]
+
+
+
+def talk(text) -> None:
+    global sequence
+    ex_sequence: int = sequence
+    sequence = sequence_dict["SPEAKING"]
     print(text)
-#     engine.say(text)
-#     engine.runAndWait()
+    sequence = ex_sequence
 
 
-def take_command():
 
+def take_command() -> str:
     with sr.Microphone() as source:
         rn.adjust_for_ambient_noise(source)
         print('listening...')
@@ -37,11 +74,20 @@ def take_command():
         transcript: str = requesting.request_stt(base64_encoded_voice)
         return transcript
 
-
-def main():
+def main() -> None:
+    global sequence
     while True:
         transcript: str = take_command()
         if language_process.is_wake_up_word(transcript):
-            talk('안녕하세요 세리입니다.')
+            waiting_for_idle()
+            print(sequence)
+            sequence = sequence_dict["WAKE_UP"]
+            talk('네 무었을 도와드릴까요?')
+            sequence = sequence_dict["LISTENING"]
+
+
+
+listener = sr.Recognizer()
+rn = sr.Recognizer()
 
 main()

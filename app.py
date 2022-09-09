@@ -3,7 +3,6 @@ load_dotenv()
 
 from time import time
 import speech_recognition as sr
-from gtts import gTTS
 import datetime, base64, time, socketio, os
 
 from module import requesting, language_process, board_controll

@@ -9,6 +9,7 @@ def request_stt(base64_encoded) -> str:
         'content': base64_encoded
     }
     param_json = json.dumps(param_dict)
+    print(param_json)
     response: requests.Response = requests.post(backend_url, json=param_json)
     print(response.text)
     transcript: str = response.json()['transcript']

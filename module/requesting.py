@@ -19,8 +19,9 @@ def request_stt(base64_encoded) -> return_value:
         "content": base64_encoded
     }
     param_json = json.dumps(param_dict)
-    print(response.text)
+    
     response: requests.Response = requests.post(backend_url+"/voice/stt", headers=headers,data=param_json)
+    print(response.text)
     result = response.json()
     
     if result["success"] != "true":

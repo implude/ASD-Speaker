@@ -15,7 +15,7 @@ def request_stt(base64_encoded) -> str:
     print(param_json)
     response: requests.Response = requests.post(backend_url+"/voice/stt", headers=headers,data=param_json)
     print(response.text)
-    transcript: str = response.json()['transcript']
+    transcript: str = response.json()['result'][0]["transcript"]
 
     return transcript
 

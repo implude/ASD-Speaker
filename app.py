@@ -79,14 +79,24 @@ def main() -> None:
     global sequence
     while True:
         transcript: requesting.return_value = take_command()
-        if transcript.err:
+        if not transcript.err:
             talk("대화를 처리하는 과정에서 문제가 발생했습니다")
+            continue
         if language_process.is_wake_up_word(transcript.transcript):
             waiting_for_idle()
             print(sequence)
             sequence = sequence_dict["WAKE_UP"]
             talk('네 무었을 도와드릴까요?')
             sequence = sequence_dict["LISTENING"]
+            transcript: requesting.return_value = take_command()
+            if not transcript.err:
+                talk("대화를 처리하는 과정에서 문제가 발생했습니다")
+                sequence = sequence_dict["IDLE"]
+                continue
+            if language_process.is_study_mode(transcript.transcript):
+                talk("네 공부모드를 시작할게요")
+            
+            
 
 
 

@@ -29,7 +29,7 @@ def waiting_for_idle() -> None:
 # SocketIO Connection Handeler
 
 sio = socketio.AsyncClient()
-sio.connect(os.environ['backend url'])
+sio.connect(os.environ['BACKEND_URL'])
 
 @sio.on('nfc')
 async def on_message(data):

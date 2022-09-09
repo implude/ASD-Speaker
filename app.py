@@ -29,7 +29,7 @@ def waiting_for_idle() -> None:
 # SocketIO Connection Handeler
 
 sio = socketio.AsyncClient()
-sio.connect('http://localhost:5000')
+sio.connect(os.environ['backend url'])
 
 @sio.on('nfc')
 async def on_message(data):
@@ -69,7 +69,7 @@ def take_command() -> str:
         rn.adjust_for_ambient_noise(source)
         print('listening...')
         voice = rn.listen(source)
-        base64_encoded_voice: bytes = base64.b64encode(voice.get_wav_data())
+        base64_encoded_voice: str = base64.b64encode(voice.get_wav_data()).decode('utf-8')
         transcript: str = requesting.request_stt(base64_encoded_voice)
         return transcript
 

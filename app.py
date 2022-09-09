@@ -78,8 +78,10 @@ def take_command() -> str:
 def main() -> None:
     global sequence
     while True:
-        transcript: str = take_command()
-        if language_process.is_wake_up_word(transcript):
+        transcript: requesting.return_value = take_command()
+        if transcript.err:
+            talk("대화를 처리하는 과정에서 문제가 발생했습니다")
+        if language_process.is_wake_up_word(transcript.transcript):
             waiting_for_idle()
             print(sequence)
             sequence = sequence_dict["WAKE_UP"]

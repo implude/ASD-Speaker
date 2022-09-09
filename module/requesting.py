@@ -24,13 +24,12 @@ def request_stt(base64_encoded) -> return_value:
     print(response.text)
     result = response.json()
     
-    if result["success"] != "true":
-        err = True
-        transcript: str = None
-    else:
-        err = False
+    if result["success"]:
+        
         transcript: str = response.json()['result'][0]["transcript"]
-    return return_value(transcript=transcript,err=err)
+    else:
+        transcript: str = None
+    return return_value(transcript=transcript,err=result["success"])
 
 
         

@@ -11,7 +11,7 @@ class return_value:
         self.err = err
 
 def request_stt(base64_encoded) -> return_value:
-    headers = {
+    headers: dict = {
         'Content-Type': 'application/json; charset=utf-8',
         'SN': SN
         }
@@ -22,7 +22,7 @@ def request_stt(base64_encoded) -> return_value:
     
     response: requests.Response = requests.post(backend_url+"/voice/stt", headers=headers,data=param_json)
     print(response.text)
-    result = response.json()
+    result: dict = response.json()
     
     if result["success"]:
         
@@ -30,6 +30,17 @@ def request_stt(base64_encoded) -> return_value:
     else:
         transcript: str = None
     return return_value(transcript=transcript,err=result["success"])
+
+def request_study_mode():
+    headers: dict = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'SN': SN
+        }
+    response: requests.Response = requests.get(backend_url+"/study_mode", headers=headers)
+    print(response.text)
+    result: dict = response.json()
+    return result["success"]
+
 
 
         

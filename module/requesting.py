@@ -1,5 +1,3 @@
-from sre_constants import SUCCESS
-from unittest import result
 import requests, os, json
 
 SN: str = os.environ['SN']
@@ -31,7 +29,7 @@ def request_stt(base64_encoded) -> return_value:
         transcript: str = None
     return return_value(transcript=transcript,err=result["success"])
 
-def request_study_mode():
+def request_start_study_mode():
     headers: dict = {
         'Content-Type': 'application/json; charset=utf-8',
         'SN': SN

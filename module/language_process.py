@@ -1,10 +1,10 @@
 from multiprocessing.resource_sharer import stop
 
 
-wake_up_word_list = ['세리', '쎄리', '새리', "쌔리", '쉐리', '세이', '시리', '체리']
+wake_up_word_list = ['세리', '쎄리', '새리', "쌔리", '쉐리', '세이', '시리', '체리', '캐리']
 study_mode_word_list = ["공부모드", "공부 모드", "공부 모두"]
 
-start_word_list = ["시작", "스타트", "틀어", "켜"]
+start_word_list = ["시작", "스타트", "틀어", "켜", "재생"]
 stop_word_list = ["그만", "멈춰", "중지", "종료", "꺼줘"]
 
 

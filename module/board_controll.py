@@ -28,15 +28,9 @@ def bright_down_hex(hex_code):
         G = 0
     if B < 0:
         B = 0
-    hex_R = hex(R)
-    hex_G = hex(G)
-    hex_B = hex(B)
-    if len(hex_R) == 1:
-        hex_R = "0" + hex_R
-    if len(hex_G) == 1:
-        hex_G = "0" + hex_G
-    if len(hex_B) == 1:
-        hex_B = "0" + hex_B
+    hex_R = format(R, '2x')
+    hex_G = format(G, '2x')
+    hex_B = format(B, '2x')
     print(hex_R + hex_G + hex_B)
     return hex_R + hex_G + hex_B
 
@@ -53,5 +47,8 @@ def bright_up_hex(hex_code):
         G = 255
     if B > 255:
         B = 255
-    return hex(R) + hex(G) + hex(B)
+    hex_R = format(R, '2x')
+    hex_G = format(G, '2x')
+    hex_B = format(B, '2x')
+    return hex_R + hex_G + hex_B
 

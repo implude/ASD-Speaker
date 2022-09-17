@@ -16,7 +16,7 @@ pygame.mixer.init()
 
 global volume
 
-volume = 0.90
+volume = 0.80
 
 global sequence
 
@@ -40,16 +40,17 @@ global white_noise_list
 
 white_noise_list = [
     pygame.mixer.Sound("audio/1.mp3"),
-    pygame.mixer.Sound("audio/1.mp3"),
+    pygame.mixer.Sound("audio/2.mp3"),
     pygame.mixer.Sound("audio/1.mp3")
 ]
 
 audio_dict: dict = {
-    "공부모드를 시작할게요": "start_study_mode.mp3",
+    
     "네 공부 모드를 시작할까요?": "shall_we_start_study_mode.mp3",
-    "휴대폰을 올려 놓으셨군요 공부 모드를 시작할까요?": "shall_we_start_study_mode_with_phone.mp3",
-    "휴대폰을 올려 놓으시지 않아 공부 모드가 종료됩니다": "phone_not_found_study_stop.mp3",
-    "네 공부 모드를 종료할게요": "stop_study_mode.mp3",
+    "휴대폰을 올려 놓으셨군요 공부 모드를 시작합니다": "start_study_mode_with_phone.mp3",
+    "휴대폰을 올려 인식되지 않아 공부 모드가 종료되었어요": "phone_not_found_study_stop.mp3",
+    "네 공부모드를 시작할게요": "start_study_mode.mp3",
+    "네 공부모드를 종료할게요": "stop_study_mode.mp3",
     "네 무었을 도와드릴까요?": "what_can_i_do.mp3",
     "네 백색소음을 재생할게요": "play_white_noise.mp3",
     "네 백색소음을 변경할게요": "change_white_noise.mp3",
@@ -162,7 +163,6 @@ def main() -> None:
             print(sequence)
             sequence = sequence_dict["WAKE_UP"]
             talk('네 무었을 도와드릴까요?')
-            time(3)
             sequence = sequence_dict["LISTENING"]
             understand = False
             while not understand:
@@ -215,25 +215,27 @@ def main() -> None:
                     if language_process.is_increase_word(transcript.transcript):
                         if volume >= 1.00:
                             talk("현재 볼륨이 최대에요")
-                        elif volume >= 0.90:
+                        elif volume >= 0.80:
                             change_volume(1.00)
                             talk("네 볼륨을 최대로 키울게요")
                         else:
-                            change_volume(volume+0.10)
+                            change_volume(volume+0.20)
                             talk("네 볼륨을 키울게요")
                         understand = True
                     elif language_process.is_decrease_word(transcript.transcript):
-                        if volume <= 0.40:
+                        if volume <= 0.20:
                             talk("현재 볼륨이 최소에요")
-                        elif volume <= 0.50:
-                            change_volume(0.40)
+                        elif volume <= 0.40:
+                            change_volume(0.20)
                             talk("네 볼륨을 최소로 줄일게요")
                         else:
-                            change_volume(volume-0.10)
+                            change_volume(volume-0.20)
                             talk("네 볼륨을 줄일게요")
                         understand = True
                     else:
                         talk("이해하지 못했어요 다시 말해주세요")
+                else:
+                    talk("이해하지 못했어요 다시 말해주세요")
             sequence = sequence_dict["IDLE"]
 
 listener = sr.Recognizer()

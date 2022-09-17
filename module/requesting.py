@@ -37,7 +37,7 @@ def request_start_study_mode():
     response: requests.Response = requests.get(backend_url+"/study_mode", headers=headers)
     print(response.text)
     result: dict = response.json()
-    return esult["success"]
+    return result["success"]
 
 
 

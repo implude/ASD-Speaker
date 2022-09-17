@@ -111,6 +111,8 @@ def talk(text) -> None:
     sound = pygame.mixer.Sound("audio/" + audio_dict[text])
     sound.set_volume(volume)
     sound.play() 
+    while sound.get_busy():
+        time.sleep(0.1)
     sequence = ex_sequence
 
 def queue_white_noise():

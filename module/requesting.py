@@ -27,7 +27,7 @@ def request_stt(base64_encoded) -> return_value:
         transcript: str = response.json()['result'][0]["transcript"]
     else:
         transcript: str = None
-    return return_value(transcript=transcript,err=result["success"])
+    return return_value(transcript=transcript,err=not result["success"])
 
 def request_start_study_mode():
     headers: dict = {
@@ -37,7 +37,7 @@ def request_start_study_mode():
     response: requests.Response = requests.get(backend_url+"/study_mode", headers=headers)
     print(response.text)
     result: dict = response.json()
-    return not result["success"]
+    return esult["success"]
 
 
 

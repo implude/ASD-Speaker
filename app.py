@@ -7,11 +7,9 @@ import speech_recognition as sr
 import datetime, base64, time, socketio, os
 
 from module import requesting, language_process, board_controll
-import pygame
+from pygame import mixer
 
-
-pygame.init()
-pygame.mixer.init()
+mixer.init()
 
 
 global volume
@@ -39,9 +37,9 @@ white_noise_index = 0
 global white_noise_list
 
 white_noise_list = [
-    pygame.mixer.Sound("audio/1.mp3"),
-    pygame.mixer.Sound("audio/2.mp3"),
-    pygame.mixer.Sound("audio/1.mp3")
+    mixer.Sound("audio/1.mp3"),
+    mixer.Sound("audio/2.mp3"),
+    mixer.Sound("audio/1.mp3")
 ]
 
 audio_dict: dict = {
@@ -109,7 +107,7 @@ def talk(text) -> None:
     ex_sequence: int = sequence
     sequence = sequence_dict["SPEAKING"]
     print("세리: "+text)
-    sound = pygame.mixer.Sound("audio/" + audio_dict[text])
+    sound = mixer.Sound("audio/" + audio_dict[text])
     sound.set_volume(volume)
     sound.play() 
     sequence = ex_sequence

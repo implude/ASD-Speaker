@@ -34,7 +34,7 @@ def is_stop_word(text):
     return False
 
 def is_white_noise(text):
-    if "백색소음" in text:
+    if "백색소음" in text or "백색 소음":
         return True
     return False
 

@@ -37,9 +37,9 @@ white_noise_index = 0
 global white_noise_list
 
 white_noise_list = [
-    mixer.Sound("audio/1.mp3"),
-    mixer.Sound("audio/2.mp3"),
-    mixer.Sound("audio/1.mp3")
+    mixer.Sound("./audio/1.mp3"),
+    mixer.Sound("./audio/2.mp3"),
+    mixer.Sound("./audio/1.mp3")
 ]
 
 audio_dict: dict = {

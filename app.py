@@ -37,26 +37,26 @@ white_noise_index = 0
 global white_noise_list
 
 white_noise_list = [
-    mixer.Sound("./audio/1.mp3"),
-    mixer.Sound("./audio/2.mp3"),
-    mixer.Sound("./audio/1.mp3")
+    mixer.Sound("./audio/1.wav"),
+    mixer.Sound("./audio/2.wav"),
+    mixer.Sound("./audio/1.wav")
 ]
 
 audio_dict: dict = {
     
-    "네 공부 모드를 시작할까요?": "shall_we_start_study_mode.mp3",
-    "휴대폰을 올려 놓으셨군요 공부 모드를 시작합니다": "start_study_mode_with_phone.mp3",
-    "휴대폰을 올려 인식되지 않아 공부 모드가 종료되었어요": "phone_not_found_study_stop.mp3",
-    "네 공부모드를 시작할게요": "start_study_mode.mp3",
-    "네 공부모드를 종료할게요": "stop_study_mode.mp3",
-    "네 무었을 도와드릴까요?": "what_can_i_do.mp3",
-    "네 백색소음을 재생할게요": "play_white_noise.mp3",
-    "네 백색소음을 변경할게요": "change_white_noise.mp3",
-    "네 백색소음을 종료했어요": "stop_white_noise.mp3",
-    "네 볼륨을 줄일게요": "decrease_volume.mp3",
-    "네 볼륨을 키울게요": "increase_volume.mp3",
-    "현재 볼륨이 최대 입니다": "volume_max.mp3",
-    "현재 볼륨이 최소 입니다": "volume_min.mp3",
+    "네 공부 모드를 시작할까요?": "shall_we_start_study_mode.wav",
+    "휴대폰을 올려 놓으셨군요 공부 모드를 시작합니다": "start_study_mode_with_phone.wav",
+    "휴대폰을 올려 인식되지 않아 공부 모드가 종료되었어요": "phone_not_found_study_stop.wav",
+    "네 공부모드를 시작할게요": "start_study_mode.wav",
+    "네 공부모드를 종료할게요": "stop_study_mode.wav",
+    "네 무었을 도와드릴까요?": "what_can_i_do.wav",
+    "네 백색소음을 재생할게요": "play_white_noise.wav",
+    "네 백색소음을 변경할게요": "change_white_noise.wav",
+    "네 백색소음을 종료했어요": "stop_white_noise.wav",
+    "네 볼륨을 줄일게요": "decrease_volume.wav",
+    "네 볼륨을 키울게요": "increase_volume.wav",
+    "현재 볼륨이 최대 입니다": "volume_max.wav",
+    "현재 볼륨이 최소 입니다": "volume_min.wav",
     }
 
 def waiting_for_idle() -> None:

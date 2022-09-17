@@ -49,7 +49,7 @@ def is_led(text):
     return False
 
 def is_decrease_word(text):
-    if "낮춰" in text or "줄여" in text or "낮추어" in text or "낮혀" in text or "낮게":
+    if "낮춰" in text or "줄여" in text or "낮추어" in text or "낮혀" in text or "낮게" in text:
         return True
     return False
 

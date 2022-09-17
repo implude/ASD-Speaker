@@ -11,8 +11,6 @@ import pygame
 
 pygame.mixer.init()
 
-
-
 global volume
 
 volume = 0.80
@@ -42,6 +40,13 @@ white_noise_list = [
     pygame.mixer.Sound("./audio/2.wav"),
     pygame.mixer.Sound("./audio/1.wav")
 ]
+
+global led_color
+global led_on
+
+led_on = True
+
+led_color = "ffffff"
 
 audio_dict: dict = {
     
@@ -86,11 +91,21 @@ async def on_message(data):
 @sio.on("led")
 async def on_message(data):
     global sequence
-    board_controll.change_led_bright(data)
-    await waiting_for_idle()
-    sequence = sequence_dict["WAKE_UP"]
-    talk("LED 밝기를 조절했어요")
-    sequence = sequence_dict["IDLE"]
+    global led_color
+    global led_on
+    if len(led_color) == 6:
+        if data != "000000":
+            led_color = data
+            board_controll.change_led_color(data)
+            await waiting_for_idle()
+            sequence = sequence_dict["WAKE_UP"]
+            talk("LED 밝기를 조절했어요")
+            sequence = sequence_dict["IDLE"]
+        else:
+            led_on = False
+            board_controll.change_led_color("000000")
+
+        
 
 @sio.on('volume')
 async def on_message(data):
@@ -137,9 +152,6 @@ def stop_white_noise():
     global white_noise_list
     for i in range(len(white_noise_list)):
         white_noise_list[i].stop()
-
-
-
 
 def take_command():
     with sr.Microphone() as source:
@@ -199,16 +211,26 @@ def main() -> None:
                     else:
                         talk("이해하지 못했어요 다시 말해주세요")
                 elif language_process.is_led(transcript.transcript):
+                    global led_on
+                    global led_color
                     if language_process.is_increase_word(transcript.transcript):
+                        led_on = True
+                        board_controll.change_led_color(board_controll.bright_up_hex(led_color))
                         talk("네 LED 밝기를 키울게요")
                         understand = True
                     elif language_process.is_decrease_word(transcript.transcript):
+                        led_on = True
+                        board_controll.change_led_color(board_controll.bright_down_hex(led_color))
                         talk("네 LED 밝기를 줄일게요")
                         understand = True
                     elif language_process.is_stop_word(transcript.transcript):
+                        led_on = False
+                        board_controll.change_led_color("000000")
                         talk("네 LED를 끌게요")
                         understand = True
                     elif language_process.is_start_word(transcript.transcript):
+                        led_on = True
+                        board_controll.change_led_color(led_color)
                         talk("네 LED를 켤게요")
                         understand = True
                     else:

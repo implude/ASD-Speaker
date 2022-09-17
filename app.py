@@ -140,16 +140,16 @@ def stop_white_noise():
 
 
 
-# def take_command():
-#     with sr.Microphone() as source:
-#         rn.adjust_for_ambient_noise(source)
-#         print('listening...')
-#         voice = rn.listen(source)
-#         base64_encoded_voice: str = base64.b64encode(voice.get_wav_data()).decode('utf-8')
-#         transcript: str = requesting.request_stt(base64_encoded_voice)
-#         return transcript
-def take_command() -> str: #for test
-    return requesting.return_value(input("명령을 입력하세요: "), False)
+def take_command():
+    with sr.Microphone() as source:
+        rn.adjust_for_ambient_noise(source)
+        print('listening...')
+        voice = rn.listen(source)
+        base64_encoded_voice: str = base64.b64encode(voice.get_wav_data()).decode('utf-8')
+        transcript: str = requesting.request_stt(base64_encoded_voice)
+        return transcript
+# def take_command() -> str: #for test
+#     return requesting.return_value(input("명령을 입력하세요: "), False)
 
 def main() -> None:
     global sequence

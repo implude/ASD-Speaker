@@ -19,9 +19,9 @@ def bright_down_hex(hex_code):
     R = int(hex_code[0:2], 16)
     G = int(hex_code[2:4], 16)
     B = int(hex_code[4:6], 16)
-    R = R - 50
-    G = G - 50
-    B = B - 50
+    R = R - 80
+    G = G - 80
+    B = B - 80
     if R < 0:
         R = 0
     if G < 0:
@@ -38,9 +38,9 @@ def bright_up_hex(hex_code):
     R = int(hex_code[0:2], 16)
     G = int(hex_code[2:4], 16)
     B = int(hex_code[4:6], 16)
-    R = R + 50
-    G = G + 50
-    B = B + 50
+    R = R + 80
+    G = G + 80
+    B = B + 80
     if R > 255:
         R = 255
     if G > 255:

@@ -37,6 +37,7 @@ def bright_down_hex(hex_code):
         hex_G = "0" + hex_G
     if len(hex_B) == 1:
         hex_B = "0" + hex_B
+    print(hex_R + hex_G + hex_B)
     return hex_R + hex_G + hex_B
 
 def bright_up_hex(hex_code):

@@ -159,7 +159,6 @@ def main() -> None:
             continue
         if language_process.is_wake_up_word(transcript.transcript):
             waiting_for_idle()
-            print(sequence)
             sequence = sequence_dict["WAKE_UP"]
             talk('네 무었을 도와드릴까요?')
             sequence = sequence_dict["LISTENING"]

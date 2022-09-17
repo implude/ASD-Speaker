@@ -146,7 +146,9 @@ def take_command():
         rn.adjust_for_ambient_noise(source)
         print('listening...')
         voice = rn.listen(source)
+        print('encoding...')
         base64_encoded_voice: str = base64.b64encode(voice.get_wav_data()).decode('utf-8')
+        print('recognizing...')
         transcript: str = requesting.request_stt(base64_encoded_voice)
         return transcript
 # def take_command() -> str: #for test

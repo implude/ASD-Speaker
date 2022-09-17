@@ -9,6 +9,7 @@ py_serial = serial.Serial(
 
 s = "ffffff"
 py_serial.write(s.encode())
+print("LED start")
 
 
 def change_led_bright(bright):

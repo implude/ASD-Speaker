@@ -63,6 +63,12 @@ audio_dict: dict = {
     "네 볼륨을 키울게요": "increase_volume.wav",
     "현재 볼륨이 최대 입니다": "volume_max.wav",
     "현재 볼륨이 최소 입니다": "volume_min.wav",
+    "네 볼륨을 최대로 키울게요": "increase_volume_max.wav",
+    "네 볼륨을 최소로 줄일게요": "decrease_volume_min.wav",
+    "네 LED 밝기를 줄일게요": "decrease_led.wav",
+    "네 LED 밝기를 높일게요": "increase_led.wav",
+    "네 LED를 켤게요": "turn_on_led.wav",
+    "네 LED를 끌게요": "turn_off_led.wav",
     }
 
 def waiting_for_idle() -> None:
@@ -216,7 +222,7 @@ def main() -> None:
                     if language_process.is_increase_word(transcript.transcript):
                         led_on = True
                         board_controll.change_led_color(board_controll.bright_up_hex(led_color))
-                        talk("네 LED 밝기를 키울게요")
+                        talk("네 LED 밝기를 높일게요")
                         understand = True
                     elif language_process.is_decrease_word(transcript.transcript):
                         led_on = True

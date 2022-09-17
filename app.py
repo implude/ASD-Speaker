@@ -110,8 +110,8 @@ def talk(text) -> None:
     print("세리: "+text)
     sound = pygame.mixer.Sound("audio/" + audio_dict[text])
     sound.set_volume(volume)
-    sound.play() 
-    while sound.get_busy():
+    channal = sound.play() 
+    while channal.get_busy():
         time.sleep(0.1)
     sequence = ex_sequence
 

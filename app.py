@@ -269,7 +269,7 @@ def main() -> None:
                         talk("이해하지 못했어요 다시 말해주세요")
                 else:
                     talk("이해하지 못했어요 다시 말해주세요")
-            sequence = sequence_dict["IDLE"]
+        sequence = sequence_dict["IDLE"]
             # time.sleep(5)
 
 listener = sr.Recognizer()

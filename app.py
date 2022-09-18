@@ -101,7 +101,8 @@ def on_led_color_message(data):
     global sequence
     global led_color
     global led_on
-    if len(led_color) == 6:
+    data = data.replace('#', '')
+    if len(data) == 6:
         if data != "000000":
             led_color = data
             board_controll.change_led_color(data)

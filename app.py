@@ -79,20 +79,17 @@ def waiting_for_idle() -> None:
 sio = socketio.Client()
 sio.connect(os.environ['BACKEND_URL'], wait_timeout=10)
 
-@sio.on('nfc_on')
-def on_message(data):
+def on_nfc_on_message(data):
     waiting_for_idle()
     talk('휴대폰을 올려 놓으셨군요 공부 모드를 시작합니다')
     sio.emit('study', 'study start')
 
-@sio.on('nfc_off')
-def on_message(data):
+def on_nfc_off_message(data):
     waiting_for_idle()
     talk('휴대폰을 올려 인식되지 않아 공부 모드가 종료되었어요')
     sio.emit('study', 'study stop')
 
-@sio.on("LED_color")
-def on_message(data):
+def on_led_color_message(data):
     global sequence
     global led_color
     global led_on
@@ -108,12 +105,18 @@ def on_message(data):
             led_on = False
             board_controll.change_led_color("000000")
 
-        
-
-@sio.on('volume')
-async def on_message(data):
+def on_volume_message(data):
     change_volume(volume_val=data/100)
     print("Volume Changed by Remote: " + str(data))
+
+def on_white_noise_message(data):
+    pass
+
+sio.on('nfc_on', on_nfc_on_message)
+sio.on('nfc_off', on_nfc_off_message)
+sio.on('LED_color', on_led_color_message)
+sio.on('volume', on_volume_message)
+sio.on('white_noise', on_white_noise_message)
 
 def change_volume(volume_val):
     global volume

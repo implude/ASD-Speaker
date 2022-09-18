@@ -107,7 +107,6 @@ def on_led_color_message(data):
             board_controll.change_led_color(data)
             waiting_for_idle()
             sequence = sequence_dict["WAKE_UP"]
-            talk("LED 밝기를 조절했어요")
             sequence = sequence_dict["IDLE"]
         else:
             led_on = False

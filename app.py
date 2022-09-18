@@ -133,7 +133,7 @@ def talk(text) -> None:
     sound.set_volume(volume)
     channal = sound.play() 
     while channal.get_busy():
-        time.sleep(0.1)
+        time.sleep(0.01)
     sequence = ex_sequence
 
 def queue_white_noise():
@@ -160,17 +160,20 @@ def stop_white_noise():
         white_noise_list[i].stop()
 
 def take_command():
-    with sr.Microphone() as source:
-        rn.adjust_for_ambient_noise(source)
-        print('listening...')
-        voice = rn.listen(source)
-        print('encoding...')
-        base64_encoded_voice: str = base64.b64encode(voice.get_wav_data()).decode('utf-8')
-        print('recognizing...')
-        transcript: str = requesting.request_stt(base64_encoded_voice)
-        return transcript
-# def take_command() -> str: #for test
-#     return requesting.return_value(input("명령을 입력하세요: "), False)
+    if os.environ["CLI_MODE"] == 0:
+        with sr.Microphone() as source:
+            print("prepareing to listen...")
+            rn.adjust_for_ambient_noise(source)
+            print('listening...')
+            voice = rn.listen(source)
+            print('encoding...')
+            base64_encoded_voice: str = base64.b64encode(voice.get_wav_data()).decode('utf-8')
+            print('recognizing...')
+            transcript: str = requesting.request_stt(base64_encoded_voice)
+            print('processing...')
+            return transcript
+    else:
+        return requesting.return_value(input("명령을 입력하세요: "), False)
 
 def main() -> None:
     global sequence
@@ -267,6 +270,7 @@ def main() -> None:
                 else:
                     talk("이해하지 못했어요 다시 말해주세요")
             sequence = sequence_dict["IDLE"]
+            # time.sleep(5)
 
 listener = sr.Recognizer()
 rn = sr.Recognizer()

@@ -224,12 +224,14 @@ def main() -> None:
                     global led_color
                     if language_process.is_increase_word(transcript.transcript):
                         led_on = True
-                        board_controll.change_led_color(board_controll.bright_up_hex(led_color))
+                        led_color = board_controll.bright_up_hex(led_color)
+                        board_controll.change_led_color(led_color)
                         talk("네 LED 밝기를 높일게요")
                         understand = True
                     elif language_process.is_decrease_word(transcript.transcript):
                         led_on = True
-                        board_controll.change_led_color(board_controll.bright_down_hex(led_color))
+                        led_color = board_controll.bright_down_hex(led_color)
+                        board_controll.change_led_color(led_color)
                         talk("네 LED 밝기를 줄일게요")
                         understand = True
                     elif language_process.is_stop_word(transcript.transcript):

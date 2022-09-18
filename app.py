@@ -102,7 +102,6 @@ def on_led_color_message(data):
     global led_color
     global led_on
     data = data.replace('#', '')
-    print(data)
     if len(data) == 6:
         print('LED Color Changed')
         if data != "000000":

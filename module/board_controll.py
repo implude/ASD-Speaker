@@ -7,22 +7,18 @@ py_serial = serial.Serial(
     baudrate=9600,
 )
 
-s = "ffffff"
-py_serial.write(s.encode())
-print("LED start")
 
 def change_led_color(hex_code):
+    print(hex_code)
     py_serial.write(hex_code.encode())
-    time.sleep(0.1)
-    
-    if py_serial.readable():
-        
-        # 들어온 값이 있으면 값을 한 줄 읽음 (BYTE 단위로 받은 상태)
-        # BYTE 단위로 받은 response 모습 : b'\xec\x97\x86\xec\x9d\x8c\r\n'
-        response = py_serial.readline()
-        
-        # 디코딩 후, 출력 (가장 끝의 \n을 없애주기위해 슬라이싱 사용)
-        print(response[:len(response)-1].decode())
+    # time.sleep(0.1)
+    # if py_serial.readable():
+    #     response = py_serial.readline()
+    #     print(response[:len(response)-1].decode())
+
+
+change_led_color('ffffff')
+print("LED start")
 
 
 def bright_down_hex(hex_code):

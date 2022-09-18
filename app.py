@@ -78,6 +78,14 @@ def waiting_for_idle() -> None:
 
 sio = socketio.Client()
 sio.connect(os.environ['BACKEND_URL'], wait_timeout=10)
+def on_connect():
+    print('Socket connected')
+
+def on_disconnect():
+    print('Socket disconnected')
+
+def on_reconnect():
+    print('Socket reconnect')
 
 def on_nfc_on_message(data):
     waiting_for_idle()
@@ -111,7 +119,9 @@ def on_volume_message(data):
 
 def on_white_noise_message(data):
     pass
-
+sio.on('connect', on_connect)
+sio.on('disconnect', on_disconnect)
+sio.on('reconnect', on_reconnect)
 sio.on('nfc_on', on_nfc_on_message)
 sio.on('nfc_off', on_nfc_off_message)
 sio.on('LED_color', on_led_color_message)

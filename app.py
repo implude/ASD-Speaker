@@ -16,11 +16,9 @@ global volume
 volume = 0.80
 
 global sequence
-
-sequence: int = 0
-
 global sequence_dict
 
+sequence: int = 0
 sequence_dict: dict = {
     "IDLE": 0,
     "WAKE_UP": 1,
@@ -30,16 +28,16 @@ sequence_dict: dict = {
 }
 
 global white_noise_index
+global white_noise_list
+global white_playing
 
 white_noise_index = 0
-
-global white_noise_list
-
 white_noise_list = [
     pygame.mixer.Sound("./audio/1.wav"),
     pygame.mixer.Sound("./audio/2.wav"),
     pygame.mixer.Sound("./audio/1.wav")
 ]
+white_noise_playing = False
 
 global led_color
 global led_on
@@ -79,22 +77,21 @@ def waiting_for_idle() -> None:
 # SocketIO Connection Handeler
 
 sio = socketio.Client()
-sio.connect(os.environ['BACKEND_URL'])
+sio.connect(os.environ['BACKEND_URL'], wait_timeout=10)
 
-@sio.on('nfc')
+@sio.on('nfc_on')
 def on_message(data):
-    global sequence
-    if sequence == sequence_dict["IDLE"]:
-        sequence = sequence_dict["WAKE_UP"]
-        talk('공부 모드를 시작 할까요?')
-        transcript = take_command()
-        sio.emit('study', 'study start')
-    elif sequence == sequence_dict["WAITING_NFC"]:
-        sequence = sequence_dict["IDLE"]
-        sio.emit('study', 'study start')
+    waiting_for_idle()
+    talk('휴대폰을 올려 놓으셨군요 공부 모드를 시작합니다')
+    sio.emit('study', 'study start')
 
+@sio.on('nfc_off')
+def on_message(data):
+    waiting_for_idle()
+    talk('휴대폰을 올려 인식되지 않아 공부 모드가 종료되었어요')
+    sio.emit('study', 'study stop')
 
-@sio.on("led")
+@sio.on("LED_color")
 def on_message(data):
     global sequence
     global led_color

@@ -113,6 +113,7 @@ def on_message(data):
 @sio.on('volume')
 async def on_message(data):
     change_volume(volume_val=data/100)
+    print("Volume Changed by Remote: " + str(data))
 
 def change_volume(volume_val):
     global volume

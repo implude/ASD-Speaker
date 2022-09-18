@@ -78,24 +78,24 @@ def waiting_for_idle() -> None:
 
 # SocketIO Connection Handeler
 
-sio = socketio.AsyncClient()
+sio = socketio.Client()
 sio.connect(os.environ['BACKEND_URL'])
 
 @sio.on('nfc')
-async def on_message(data):
+def on_message(data):
     global sequence
     if sequence == sequence_dict["IDLE"]:
         sequence = sequence_dict["WAKE_UP"]
         talk('공부 모드를 시작 할까요?')
         transcript = take_command()
-        await sio.emit('study', 'study start')
+        sio.emit('study', 'study start')
     elif sequence == sequence_dict["WAITING_NFC"]:
         sequence = sequence_dict["IDLE"]
-        await sio.emit('study', 'study start')
+        sio.emit('study', 'study start')
 
 
 @sio.on("led")
-async def on_message(data):
+def on_message(data):
     global sequence
     global led_color
     global led_on
@@ -103,7 +103,7 @@ async def on_message(data):
         if data != "000000":
             led_color = data
             board_controll.change_led_color(data)
-            await waiting_for_idle()
+            waiting_for_idle()
             sequence = sequence_dict["WAKE_UP"]
             talk("LED 밝기를 조절했어요")
             sequence = sequence_dict["IDLE"]

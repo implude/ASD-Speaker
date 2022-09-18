@@ -7,6 +7,8 @@ ASD 프로젝트 스피커 레포
 2. ```sudo apt-get install pyaudio```
 
 
+
 # Running
 
-1. ```python3 app.py```
+1. set .env file
+2. ```python3 app.py```

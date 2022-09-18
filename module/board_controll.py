@@ -1,15 +1,15 @@
 import serial
 
-# py_serial = serial.Serial(
+py_serial = serial.Serial(
     
-#     port='/dev/ttyUSB0',
+    port='/dev/ttyUSB0',
     
-#     baudrate=9600,
-# )
+    baudrate=9600,
+)
 
-# s = "ffffff"
-# py_serial.write(s.encode())
-# print("LED start")
+s = "ffffff"
+py_serial.write(s.encode())
+print("LED start")
 
 def change_led_color(hex_code):
     py_serial.write(hex_code.encode())

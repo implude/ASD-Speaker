@@ -138,6 +138,7 @@ sio.on('reconnect', on_reconnect)
 sio.on('nfc_on', on_nfc_on_message)
 sio.on('nfc_off', on_nfc_off_message)
 sio.on('LED_color', on_led_color_message)
+sio.on('LED_bright', on_led_bright_change_message)
 sio.on('volume', on_volume_message)
 sio.on('white_noise', on_white_noise_message)
 

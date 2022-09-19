@@ -18,7 +18,7 @@ def change_led_bright(amount):
     plain = "B" + str(amount)
     py_serial.write(plain.encode())
 
-change_led_color('Xffffff')
+change_led_color('ffffff')
 print("LED start")
 
 

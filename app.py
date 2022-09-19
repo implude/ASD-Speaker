@@ -35,7 +35,7 @@ white_noise_index = 0
 white_noise_list = [
     pygame.mixer.Sound("./audio/1.wav"),
     pygame.mixer.Sound("./audio/2.wav"),
-    pygame.mixer.Sound("./audio/1.wav")
+    pygame.mixer.Sound("./audio/3.wav")
 ]
 white_noise_playing = False
 
@@ -187,17 +187,17 @@ def stop_white_noise():
     for i in range(len(white_noise_list)):
         white_noise_list[i].stop()
 
-def take_command():
+def take_command(): # 음성 명령 인식 함수
     if os.environ["CLI_MODE"] == 0:
-        with sr.Microphone() as source:
+        with sr.Microphone() as source: # Michrophone 함수로 받아온 리턴 객체를 source 변수에 저장
             print("prepareing to listen...")
-            rn.adjust_for_ambient_noise(source)
+            rn.adjust_for_ambient_noise(source) # 소스로 부터 받아온 데이터 기반으로 적응형 노이즈 제거
             print('listening...')
-            voice = rn.listen(source)
+            voice = rn.listen(source) # source로 부터 음성 데이터를 voice 변수에 저장
             print('encoding...')
-            base64_encoded_voice: str = base64.b64encode(voice.get_wav_data()).decode('utf-8')
+            base64_encoded_voice: str = base64.b64encode(voice.get_wav_data()).decode('utf-8') # voice를 PCM형삭으로 변환후 base64로 인코딩한후 다시 전송을 위해 utf8로 디코딩
             print('recognizing...')
-            transcript: str = requesting.request_stt(base64_encoded_voice)
+            transcript: str = requesting.request_stt(base64_encoded_voice) # 반환된 텍스트를 transcript 변수에 저장
             print('processing...')
             return transcript
     else:

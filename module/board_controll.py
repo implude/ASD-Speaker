@@ -10,8 +10,13 @@ py_serial = serial.Serial(
 
 def change_led_color(hex_code):
     print(hex_code)
-    py_serial.write("X" + hex_code.encode())
+    plain = "X" + hex_code
+    py_serial.write(plain.encode())
 
+def change_led_bright(amount):
+    print(amount)
+    plain = "B" + str(amount)
+    py_serial.write(plain.encode())
 
 change_led_color('Xffffff')
 print("LED start")

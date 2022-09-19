@@ -121,7 +121,7 @@ def on_led_bright_change_message(data):
         print('LED Brightness Changed')
         print(data)
         print(type(data))
-        board_controll.change_led_bright(data)
+        board_controll.change_led_bright(int(data)*10)
         waiting_for_idle()
         sequence = sequence_dict["WAKE_UP"]
         sequence = sequence_dict["IDLE"]

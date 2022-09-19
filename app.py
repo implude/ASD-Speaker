@@ -41,7 +41,9 @@ white_noise_playing = False
 
 global led_color
 global led_on
+global led_bright
 
+led_bright = 100
 led_on = True
 
 led_color = "ffffff"
@@ -88,6 +90,7 @@ def on_reconnect():
     print('Socket reconnect')
 
 def on_nfc_on_message(data):
+    print(data)
     waiting_for_idle()
     talk('휴대폰을 올려 놓으셨군요 공부 모드를 시작합니다')
     sio.emit('study', 'study start')

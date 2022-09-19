@@ -53,7 +53,7 @@ audio_dict: dict = {
     "네 공부 모드를 시작할까요?": "shall_we_start_study_mode.wav",
     "휴대폰을 올려 놓으셨군요 공부 모드를 시작합니다": "start_study_mode_with_phone.wav",
     "휴대폰을 올려 인식되지 않아 공부 모드가 종료되었어요": "phone_not_found_study_stop.wav",
-    "네 공부모드를 시작할게요": "start_study_mode.wav",
+    "네 휴대폰을 올려 놓으시면 공부 모드를 시작할게요": "start_study_mode.wav",
     "네 공부모드를 종료할게요": "stop_study_mode.wav",
     "네 무었을 도와드릴까요?": "what_can_i_do.wav",
     "네 백색소음을 재생할게요": "play_white_noise.wav",
@@ -224,7 +224,7 @@ def main() -> None:
                     continue
                 if language_process.is_study_mode(transcript.transcript):
                     if language_process.is_start_word(transcript.transcript):
-                        talk("네 공부모드를 시작할게요")
+                        talk("네 휴대폰을 올려 놓으시면 공부 모드를 시작할게요")
                         understand = True
                     elif language_process.is_stop_word(transcript.transcript):
                         talk("네 공부모드를 종료할게요")

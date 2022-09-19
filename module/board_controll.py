@@ -10,14 +10,10 @@ py_serial = serial.Serial(
 
 def change_led_color(hex_code):
     print(hex_code)
-    py_serial.write(hex_code.encode())
-    # time.sleep(0.1)
-    # if py_serial.readable():
-    #     response = py_serial.readline()
-    #     print(response[:len(response)-1].decode())
+    py_serial.write("X" + hex_code.encode())
 
 
-change_led_color('ffffff')
+change_led_color('Xffffff')
 print("LED start")
 
 

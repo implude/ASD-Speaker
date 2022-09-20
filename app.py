@@ -189,7 +189,7 @@ def stop_white_noise():
         white_noise_list[i].stop()
 
 def take_command(): # 음성 명령 인식 함수
-    if os.environ["CLI_MODE"] == 0:
+    if os.environ["CLI_MODE"] == "0":
         with sr.Microphone() as source: # Michrophone 함수로 받아온 리턴 객체를 source 변수에 저장
             print("prepareing to listen...")
             rn.adjust_for_ambient_noise(source) # 소스로 부터 받아온 데이터 기반으로 적응형 노이즈 제거

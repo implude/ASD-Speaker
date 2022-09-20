@@ -120,17 +120,18 @@ def on_led_color_message(data):
             board_controll.change_led_color("000000")
 def on_led_bright_change_message(data):
     global sequence
-    global led_color
     global led_on
-    if led_on:
-        print('LED Brightness Changed: '+ data)
-        board_controll.change_led_bright(int(data)*10)
-        waiting_for_idle()
-        sequence = sequence_dict["WAKE_UP"]
-        sequence = sequence_dict["IDLE"]
+    global led_bright
+    led_on = True
+    led_bright = int(data)*10
+    print('LED Brightness Changed: '+ led_bright)
+    board_controll.change_led_bright(led_bright)
+    waiting_for_idle()
+    sequence = sequence_dict["WAKE_UP"]
+    sequence = sequence_dict["IDLE"]
 
 def on_volume_message(data):
-    change_volume(volume_val=data/100)
+    change_volume(volume_val=data/10)
     print("Volume Changed by Remote: " + str(data))
 
 def on_white_noise_message(data):
@@ -264,12 +265,12 @@ def main() -> None:
                         understand = True
                     elif language_process.is_stop_word(transcript.transcript):
                         led_on = False
-                        board_controll.change_led_color("000000")
+                        board_controll.change_led_bright(0)
                         talk("네 LED를 끌게요")
                         understand = True
                     elif language_process.is_start_word(transcript.transcript):
                         led_on = True
-                        board_controll.change_led_color(led_color)
+                        board_controll.change_led_bright(100)
                         talk("네 LED를 켤게요")
                         understand = True
                     else:

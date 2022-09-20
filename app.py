@@ -97,8 +97,6 @@ def on_nfc_on_message(data):
 
 def on_nfc_off_message(data):
     waiting_for_idle()
-    print(data)
-    print(type(data))
     talk('휴대폰을 올려 인식되지 않아 공부 모드가 종료되었어요')
     sio.emit('study', 'study stop')
 
@@ -124,7 +122,7 @@ def on_led_bright_change_message(data):
     global led_bright
     led_on = True
     led_bright = int(data)*10
-    print('LED Brightness Changed: '+ led_bright)
+    print('LED Brightness Changed: '+ str(led_bright))
     board_controll.change_led_bright(led_bright)
     waiting_for_idle()
     sequence = sequence_dict["WAKE_UP"]

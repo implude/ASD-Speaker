@@ -82,6 +82,7 @@ sio = socketio.Client()
 sio.connect(os.environ['BACKEND_URL'], wait_timeout=10)
 def on_connect():
     print('Socket connected')
+    sio.emit('SN',os.environ['SN'])
 
 def on_disconnect():
     print('Socket disconnected')
@@ -107,15 +108,8 @@ def on_led_color_message(data):
     data = data.replace('#', '')
     if len(data) == 6:
         print('LED Color Changed')
-        if data != "000000":
-            led_color = data
-            board_controll.change_led_color(data)
-            waiting_for_idle()
-            sequence = sequence_dict["WAKE_UP"]
-            sequence = sequence_dict["IDLE"]
-        else:
-            led_on = False
-            board_controll.change_led_color("000000")
+        led_color = data
+        board_controll.change_led_color(data)
 def on_led_bright_change_message(data):
     global sequence
     global led_on
@@ -124,9 +118,6 @@ def on_led_bright_change_message(data):
     led_bright = int(data)*10
     print('LED Brightness Changed: '+ str(led_bright))
     board_controll.change_led_bright(led_bright)
-    waiting_for_idle()
-    sequence = sequence_dict["WAKE_UP"]
-    sequence = sequence_dict["IDLE"]
 
 def on_volume_message(data):
     change_volume(volume_val=data/10)
@@ -248,17 +239,21 @@ def main() -> None:
                         talk("이해하지 못했어요 다시 말해주세요")
                 elif language_process.is_led(transcript.transcript):
                     global led_on
-                    global led_color
+                    global led_bright
                     if language_process.is_increase_word(transcript.transcript):
                         led_on = True
-                        led_color = board_controll.bright_up_hex(led_color)
-                        board_controll.change_led_color(led_color)
+                        led_bright += 10
+                        if led_bright > 100:
+                            led_bright = 100
+                        board_controll.change_led_bright(led_bright)
                         talk("네 LED 밝기를 높일게요")
                         understand = True
                     elif language_process.is_decrease_word(transcript.transcript):
                         led_on = True
-                        led_color = board_controll.bright_down_hex(led_color)
-                        board_controll.change_led_color(led_color)
+                        led_bright -= 10
+                        if led_bright < 0:
+                            led_bright = 0
+                        board_controll.change_led_bright(led_bright)
                         talk("네 LED 밝기를 줄일게요")
                         understand = True
                     elif language_process.is_stop_word(transcript.transcript):

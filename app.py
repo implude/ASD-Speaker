@@ -33,9 +33,9 @@ global white_playing
 
 white_noise_index = 0
 white_noise_list = [
-    pygame.mixer.Sound("./audio/1.wav"),
-    pygame.mixer.Sound("./audio/2.wav"),
-    pygame.mixer.Sound("./audio/3.wav")
+    pygame.mixer.Sound("./audio/fire_sound.wav"),
+    pygame.mixer.Sound("./audio/rain_sound.wav"),
+    pygame.mixer.Sound("./audio/library_sound.wav")
 ]
 white_noise_playing = False
 
@@ -69,6 +69,17 @@ audio_dict: dict = {
     "네 LED 밝기를 높일게요": "increase_led.wav",
     "네 LED를 켤게요": "turn_on_led.wav",
     "네 LED를 끌게요": "turn_off_led.wav",
+    "30분 미만": "30min.wav",
+    "1시간 미만": "under1.wav",
+    1: "1.wav",
+    2: "2.wav",
+    3: "3.wav",
+    4: "4.wav",
+    5: "5.wav",
+    6: "6.wav",
+    7: "7.wav",
+
+
     }
 
 def waiting_for_idle() -> None:

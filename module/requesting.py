@@ -1,3 +1,4 @@
+from datetime import date, datetime
 import requests, os, json
 
 SN: str = os.environ['SN']
@@ -35,12 +36,24 @@ def request_start_study_mode():
         'SN': SN
         }
     response: requests.Response = requests.get(backend_url+"/study_mode", headers=headers)
-    print(response.text)
     result: dict = response.json()
     return result["success"]
+def request_start_study_info() -> dict:
+    headers: dict = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'SN': SN
+        }
+    response: requests.Response = requests.get(backend_url+"/@me/studyinfo", headers=headers)
+    result: dict = response.json()
+    return result["result"]
 
-
-
+def calc_study_time(study_info: dict) -> int:
+    study_time: int = 0
+    for i in study_info:
+        if i["end"] == datetime.now().strftime("%Y-%m-%d"):
+            study_time += int(i["time"])
+    study_time /= 60000
+    return study_time
         
 
 

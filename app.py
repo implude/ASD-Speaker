@@ -69,6 +69,7 @@ audio_dict: dict = {
     "네 LED 밝기를 높일게요": "increase_led.wav",
     "네 LED를 켤게요": "turn_on_led.wav",
     "네 LED를 끌게요": "turn_off_led.wav",
+    "이해하지 못했어요 다시 한번 말해주세요": "i_dont_understand.wav",
     "30분 미만": "30min.wav",
     "1시간 미만": "under1.wav",
     1: "1.wav",
@@ -135,7 +136,7 @@ def on_volume_message(data):
     print("Volume Changed by Remote: " + str(data))
 
 def on_white_noise_message(data):
-    pass
+    print('White Noise Changed: ' + str(data))
 sio.on('connect', on_connect)
 sio.on('disconnect', on_disconnect)
 sio.on('reconnect', on_reconnect)
@@ -301,7 +302,10 @@ def main() -> None:
                             talk("네 볼륨을 줄일게요")
                         understand = True
                     else:
-                        talk("이해하지 못했어요 다시 말해주세요")
+                        talk("이해하지 못했어요 다시 한번 말해주세요")
+                elif language_process.language_process.is_study_time_info(transcript.transcript):
+                    data: dict = requesting.request_start_study_info()
+                    talk("네 공부시간을 알려드릴게요")
                 else:
                     talk("이해하지 못했어요 다시 말해주세요")
         sequence = sequence_dict["IDLE"]

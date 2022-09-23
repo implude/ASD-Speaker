@@ -62,3 +62,8 @@ def is_change_word(text):
     if "바꿔" in text or "다음" in text or "변경" in text or "딴" in text or "다른" in text:
         return True
     return False
+
+def is_study_time_info(text):
+    if "알려" in text or "공부 시간" in text or "공부시간" in text:
+        return True
+    return False

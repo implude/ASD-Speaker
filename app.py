@@ -232,7 +232,7 @@ def main() -> None:
                         talk("네 공부모드를 종료할게요")
                         understand = True
                     else:
-                        talk("이해하지 못했어요 다시 말해주세요")
+                        talk("이해하지 못했어요 다시 한번 말해주세요")
                 elif language_process.is_white_noise(transcript.transcript):
                     
                     if language_process.is_change_word(transcript.transcript):
@@ -248,7 +248,7 @@ def main() -> None:
                         queue_white_noise()
                         understand = True
                     else:
-                        talk("이해하지 못했어요 다시 말해주세요")
+                        talk("이해하지 못했어요 다시 한번 말해주세요")
                 elif language_process.is_led(transcript.transcript):
                     global led_on
                     global led_bright
@@ -279,7 +279,7 @@ def main() -> None:
                         talk("네 LED를 켤게요")
                         understand = True
                     else:
-                        talk("이해하지 못했어요 다시 말해주세요")
+                        talk("이해하지 못했어요 다시 한번 말해주세요")
                 elif language_process.is_volume(transcript.transcript):
                     if language_process.is_increase_word(transcript.transcript):
                         if volume >= 1.00:
@@ -307,7 +307,7 @@ def main() -> None:
                     data: dict = requesting.request_start_study_info()
                     talk("네 공부시간을 알려드릴게요")
                 else:
-                    talk("이해하지 못했어요 다시 말해주세요")
+                    talk("이해하지 못했어요 다시 한번 말해주세요")
         sequence = sequence_dict["IDLE"]
             # time.sleep(5)
 

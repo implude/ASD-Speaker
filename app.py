@@ -305,8 +305,8 @@ def main() -> None:
                     else:
                         talk("이해하지 못했어요 다시 한번 말해주세요")
                 elif language_process.is_study_time_info(transcript.transcript):
-                    data: dict = requesting.request_start_study_info()
-                    talk("네 공부시간을 알려드릴게요")
+                    # data: dict = requesting.request_start_study_info()
+                    talk("30분 미만")
                 else:
                     talk("이해하지 못했어요 다시 한번 말해주세요")
         sequence = sequence_dict["IDLE"]

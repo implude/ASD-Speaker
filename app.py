@@ -132,7 +132,7 @@ def on_led_bright_change_message(data):
     board_controll.change_led_bright(led_bright)
 
 def on_volume_message(data):
-    change_volume(volume_val=data/10)
+    change_volume(volume_val=int(data)/10)
     print("Volume Changed by Remote: " + str(data))
 
 def on_white_noise_message(data):

@@ -137,6 +137,7 @@ def on_volume_message(data):
 
 def on_white_noise_message(data):
     print('White Noise Changed: ' + str(data))
+    play_white_noise(data)
 sio.on('connect', on_connect)
 sio.on('disconnect', on_disconnect)
 sio.on('reconnect', on_reconnect)

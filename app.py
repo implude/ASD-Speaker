@@ -13,7 +13,7 @@ pygame.mixer.init()
 
 global volume
 
-volume = 0.80
+volume = 1.00
 
 global sequence
 global sequence_dict
@@ -145,7 +145,7 @@ sio.on('nfc_on', on_nfc_on_message)
 sio.on('nfc_off', on_nfc_off_message)
 sio.on('LED_color', on_led_color_message)
 sio.on('LED_bright', on_led_bright_change_message)
-sio.on('volume', on_volume_message)
+sio.on('speaker_volume', on_volume_message)
 sio.on('white_noise', on_white_noise_message)
 
 def change_volume(volume_val):

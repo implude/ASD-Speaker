@@ -72,6 +72,8 @@ audio_dict: dict = {
     "이해하지 못했어요 다시 한번 말해주세요": "i_dont_understand.wav",
     "30분 미만": "30min.wav",
     "1시간 미만": "under1.wav",
+    "대화를 처리하는 과정에서 문제가 발생했습니다": "raise_err.wav",
+    "이해하지 못했어요 다시 한번 말해주세요": "can_not_understand.wav",
     1: "1.wav",
     2: "2.wav",
     3: "3.wav",
@@ -209,7 +211,10 @@ def take_command(): # 음성 명령 인식 함수
 def main() -> None:
     global sequence
     while True:
-        transcript: requesting.return_value = take_command()
+        try:
+            transcript: requesting.return_value = take_command()
+        except:
+            continue
         if transcript.err:
             talk("대화를 처리하는 과정에서 문제가 발생했습니다")
             continue
@@ -220,6 +225,10 @@ def main() -> None:
             sequence = sequence_dict["LISTENING"]
             understand = False
             while not understand:
+                try:
+                    transcript: requesting.return_value = take_command()
+                except:
+                    talk("")
                 transcript: requesting.return_value = take_command()
                 if transcript.err:
                     talk("대화를 처리하는 과정에서 문제가 발생했습니다")

@@ -1,14 +1,13 @@
 # ASD-Speaker
 ASD Project AI Speaker "Seri" Repository
 
-# Relate Repository
+# Related Repository
  - Arduino LED Controller https://github.com/implude/ASD-LED
 
 # Installing Dependencies
 
 1. ```pip install -r requirements.txt```
 2. ```sudo apt-get install pyaudio```
-
 
 # Running
 

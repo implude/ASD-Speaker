@@ -1,22 +1,20 @@
-from multiprocessing.resource_sharer import stop
+# Load Env Variable
 from dotenv import load_dotenv
 load_dotenv()
 
+# Import Modules
 from time import time
 import speech_recognition as sr
 import datetime, base64, time, socketio, os
-
-from module import requesting, language_process, board_controll
 import pygame
 
+from module import requesting, language_process, board_controll
+
+# Init Pygame Mixer for Audio Controll
 pygame.mixer.init()
 
-global volume
-
+#Global Variable Initialization
 volume = 1.00
-
-global sequence
-global sequence_dict
 
 sequence: int = 0
 sequence_dict: dict = {
@@ -26,11 +24,7 @@ sequence_dict: dict = {
     "SPEAKING": 3,
     "WAITING_NFC": 4
 }
-
-global white_noise_index
-global white_noise_list
-global white_playing
-
+    
 white_noise_index = 0
 white_noise_list = [
     pygame.mixer.Sound("./audio/fire_sound.wav"),
@@ -39,13 +33,8 @@ white_noise_list = [
 ]
 white_noise_playing = False
 
-global led_color
-global led_on
-global led_bright
-
 led_bright = 100
 led_on = True
-
 led_color = "ffffff"
 
 audio_dict: dict = {
@@ -81,11 +70,9 @@ audio_dict: dict = {
     5: "5.wav",
     6: "6.wav",
     7: "7.wav",
+}
 
-
-    }
-
-def waiting_for_idle() -> None:
+def waiting_for_idle() -> None: # Waiting for Speaker is idle status
     while sequence != 0:
         time.sleep(0.15)
     return
@@ -94,6 +81,7 @@ def waiting_for_idle() -> None:
 
 sio = socketio.Client()
 sio.connect(os.environ['BACKEND_URL'], wait_timeout=10)
+
 def on_connect():
     print('Socket connected')
     sio.emit('SN',os.environ['SN'])
@@ -115,7 +103,7 @@ def on_nfc_off_message(data):
     talk('휴대폰을 올려 인식되지 않아 공부 모드가 종료되었어요')
     sio.emit('study', 'study stop')
 
-def on_led_color_message(data):
+def on_led_color_message(data): # On Message, Change LED Color
     global sequence
     global led_color
     global led_on
@@ -124,7 +112,8 @@ def on_led_color_message(data):
         print('LED Color Changed')
         led_color = data
         board_controll.change_led_color(data)
-def on_led_bright_change_message(data):
+        
+def on_led_bright_change_message(data): # On Message, Change LED Bright
     global sequence
     global led_on
     global led_bright
@@ -133,13 +122,15 @@ def on_led_bright_change_message(data):
     print('LED Brightness Changed: '+ str(led_bright))
     board_controll.change_led_bright(led_bright)
 
-def on_volume_message(data):
+def on_volume_message(data): # On Message, Change Volume
     change_volume(volume_val=int(data)/10)
     print("Volume Changed by Remote: " + str(data))
 
-def on_white_noise_message(data):
+def on_white_noise_message(data): # On Message, Change White Noise
     print('White Noise Changed: ' + str(data))
     play_white_noise(int(data))
+    
+# Bind Function to socket
 sio.on('connect', on_connect)
 sio.on('disconnect', on_disconnect)
 sio.on('reconnect', on_reconnect)
@@ -156,8 +147,7 @@ def change_volume(volume_val):
     if white_noise_index != 0:
         play_white_noise(white_noise_index-1)
 
-
-def talk(text) -> None:
+def talk(text) -> None: # Play TTS Sound
     global sequence
     ex_sequence: int = sequence
     sequence = sequence_dict["SPEAKING"]
@@ -169,7 +159,7 @@ def talk(text) -> None:
         time.sleep(0.01)
     sequence = ex_sequence
 
-def queue_white_noise():
+def queue_white_noise(): # Start White Noise or Play Next White Noise
     global white_noise_index
     if white_noise_index == 0:
         white_noise_index = 1
@@ -192,8 +182,8 @@ def stop_white_noise():
     for i in range(len(white_noise_list)):
         white_noise_list[i].stop()
 
-def take_command(): # 음성 명령 인식 함수
-    if os.environ["CLI_MODE"] == "0":
+def take_command(): # Voice Commnad to Text(STT)
+    if os.environ["CLI_MODE"] == "0": # Check Debug Mode 
         with sr.Microphone() as source: # Michrophone 함수로 받아온 리턴 객체를 source 변수에 저장
             print("prepareing to listen...")
             rn.adjust_for_ambient_noise(source) # 소스로 부터 받아온 데이터 기반으로 적응형 노이즈 제거
@@ -202,11 +192,11 @@ def take_command(): # 음성 명령 인식 함수
             print('encoding...')
             base64_encoded_voice: str = base64.b64encode(voice.get_wav_data()).decode('utf-8') # voice를 PCM형삭으로 변환후 base64로 인코딩한후 다시 전송을 위해 utf8로 디코딩
             print('recognizing...')
-            transcript: str = requesting.request_stt(base64_encoded_voice) # 반환된 텍스트를 transcript 변수에 저장
+            transcript: str = requesting.request_stt(base64_encoded_voice) # 서버에서 Google STT에 요청을 보내고 반환된 텍스트를 transcript 변수에 저장
             print('processing...')
             return transcript
     else:
-        return requesting.return_value(input("명령을 입력하세요: "), False)
+        return requesting.return_value(input("명령을 입력하세요: "), False) # If Debug Mode, Use CLI input instead of Mic Interface
 
 def main() -> None:
     global sequence
@@ -215,16 +205,19 @@ def main() -> None:
             transcript: requesting.return_value = take_command()
         except:
             continue
+        
         if transcript.err:
             talk("대화를 처리하는 과정에서 문제가 발생했습니다")
             continue
-        if language_process.is_wake_up_word(transcript.transcript):
+       
+        if language_process.is_wake_up_word(transcript.transcript): # Check Command is Wake up Word
             waiting_for_idle()
             sequence = sequence_dict["WAKE_UP"]
             talk('네 무었을 도와드릴까요?')
             sequence = sequence_dict["LISTENING"]
             understand = False
-            while not understand:
+            
+            while not understand: # Loop Until Understand
                 try:
                     transcript: requesting.return_value = take_command()
                 except:
@@ -314,12 +307,13 @@ def main() -> None:
                     else:
                         talk("이해하지 못했어요 다시 한번 말해주세요")
                 elif language_process.is_study_time_info(transcript.transcript):
-                    # data: dict = requesting.request_start_study_info()
-                    talk("30분 미만")
+                    
+                    # 받아온 공부시간에 따라 대답을 변경하는 기능은 개발이 지속된다면 추후 개발예정
+                    # data: dict = requesting.request_start_study_info() 
+                    talk("30분 미만") # 일단 응답은 30분으로 고정
                 else:
                     talk("이해하지 못했어요 다시 한번 말해주세요")
         sequence = sequence_dict["IDLE"]
-            # time.sleep(5)
 
 listener = sr.Recognizer()
 rn = sr.Recognizer()
